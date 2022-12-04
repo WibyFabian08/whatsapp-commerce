@@ -1,0 +1,22 @@
+// mime type baileys
+Mimetype["jpeg"] = "image/jpeg";
+Mimetype["png"] = "image/png";
+Mimetype["mp4"] = "video/mp4";
+Mimetype["gif"] = "video/gif";
+Mimetype["pdf"] = "application/pdf";
+Mimetype["ogg"] = "audio/ogg; codecs=opus";
+Mimetype["mp4Audio"] = "audio/mp4";
+/** for stickers */
+Mimetype["webp"] = "image/webp";
+Mimetype["docx"] = "application/msword"; // new line
+
+// send pdf
+ // send pdf
+      // await sock.sendMessage(receiver, {
+      //   document: {
+      //     url: "https://storage-eticket.pasteurtrans.id/etickets/cDd4T3VuaUlGUkthZDVTS09TczhqQT09.pdf",
+      //     caption: "Tiket",
+      //   },
+      //   mimetype: "application/pdf",
+      //   mediaType: "document"
+      // });

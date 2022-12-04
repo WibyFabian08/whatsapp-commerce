@@ -1,0 +1,9 @@
+{
+    "apps": [
+      {
+        "name": "aet-bot",
+        "script": "node index"
+      }
+    ]
+  }
+  

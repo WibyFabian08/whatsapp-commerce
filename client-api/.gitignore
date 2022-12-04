@@ -1,0 +1,5 @@
+/node_modules
+.env
+/helpers/sessions/*
+/storage/*
+/data/*
