@@ -45,7 +45,7 @@ exports.initMessage = async (sock, receiver, message) => {
       let userState = await PhoneState.findOne({
         where: {
           phone: phone,
-        }
+        },
       });
 
       const headers = {
@@ -84,36 +84,50 @@ exports.initMessage = async (sock, receiver, message) => {
     }
 
     // handle order whatsapp
-    // if (orderMessage) {
-    //   let cartData = {
-    //     phone: phone,
-    //     orderId: orderMessage.orderId,
-    //     itemCount: orderMessage.itemCount,
-    //     status: orderMessage.status,
-    //     token: orderMessage.token,
-    //     total: orderMessage.totalAmount1000,
-    //   };
+    if (orderMessage) {
+      const headers = {
+        "x-api-key": botDevice.apikey,
+      };
 
-    //   await Cart.create(cartData);
+      let cartData = {
+        phone: phone,
+        orderId: orderMessage.orderId,
+        itemCount: orderMessage.itemCount,
+        status: orderMessage.status,
+        token: orderMessage.token,
+        total: parseInt(orderMessage.totalAmount1000),
+      };
 
-    //   let orderDetails = await sock.getOrderDetails(
-    //     orderMessage.orderId,
-    //     orderMessage.token
-    //   );
+      await axios.post(`http://localhost:8080/api/order/create`, cartData, {
+        headers,
+      });
 
-    //   let insertOrderDetail = [];
-    //   orderDetails.products.map((data) => {
-    //     insertOrderDetail.push({
-    //       orderId: orderMessage.orderId,
-    //       total: orderDetails.price.total,
-    //       productId: data.id,
-    //       productName: data.name,
-    //       quantity: data.quantity,
-    //     });
-    //   });
+      let orderDetails = await sock.getOrderDetails(
+        orderMessage.orderId,
+        orderMessage.token
+      );
 
-    //   await OrderDetail.bulkCreate(insertOrderDetail);
-    // }
+      let insertOrderDetail = [];
+      orderDetails.products.map((data) => {
+        insertOrderDetail.push({
+          orderId: orderMessage.orderId,
+          total: orderDetails.price.total,
+          productId: data.id,
+          productName: data.name,
+          quantity: data.quantity,
+        });
+      });
+
+      await axios.post(
+        `http://localhost:8080/api/order-detail/create`,
+        { insertOrderDetail },
+        {
+          headers,
+        }
+      );
+
+      // await OrderDetail.bulkCreate(insertOrderDetail);
+    }
   } catch (err) {
     console.log(err);
   }

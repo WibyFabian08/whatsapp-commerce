@@ -27,6 +27,7 @@ const orderRoute = require("./routes/order");
 const keywordRoute = require("./routes/keyword");
 const productCategoryRoute = require("./routes/productCategory");
 const phoneStateRoute = require("./routes/phoneState");
+const orderDetailRoute = require("./routes/orderDetail")
 
 app.use(cors("*"));
 app.use(express.json());
@@ -41,6 +42,7 @@ app.use("/api/order", orderRoute);
 app.use("/api/keyword", keywordRoute);
 app.use("/api/productCategory", productCategoryRoute);
 app.use("/api/phoneState", phoneStateRoute);
+app.use("/api/order-detail", orderDetailRoute);
 app.use("/main", mainRoute);
 app.use("/", indexRoute);
 

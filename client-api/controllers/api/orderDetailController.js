@@ -1,24 +1,15 @@
-const { Order } = require("../../models/index");
-const whatsapp = require("../../helpers/whatsapp");
+const { OrderDetail } = require("../../models/index");
 
-exports.createOrder = async (req, res) => {
+exports.createOrderDetail = async (req, res) => {
   try {
-    const order = await Order.create({
-      phone: req.body.phone,
-      orderId: req.body.orderId,
-      itemCount: req.body.itemCount,
-      status: req.body.status,
-      token: req.body.token,
-      total: req.body.total,
-    });
+    const order = await OrderDetail.bulkCreate(req.body.insertOrderDetail);
 
     return res.status(200).json({
       success: true,
-      message: "order success",
+      message: "order detail success create",
       data: order,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       success: false,
       message: "something when wrong on the server",
@@ -26,18 +17,22 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-exports.getOrder = async (req, res) => {
+exports.getOrderDetails = async (req, res) => {
   try {
-    const data = await Order.findAll();
+    const data = await OrderDetail.findAll({
+      where: {
+        orderId: req.params.id,
+      },
+    });
 
     if (data.length > 0) {
       return res.status(200).json({
         success: true,
-        message: "get orders success",
+        message: "get order detail success",
         data: data,
       });
     } else {
-      return res.status(404).json({
+      return res.status(200).json({
         success: true,
         message: "data not found",
         data: [],
@@ -47,7 +42,6 @@ exports.getOrder = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "something went wrong on the server",
-      data: {},
     });
   }
 };
