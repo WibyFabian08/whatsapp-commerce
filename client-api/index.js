@@ -28,6 +28,8 @@ const keywordRoute = require("./routes/keyword");
 const productCategoryRoute = require("./routes/productCategory");
 const phoneStateRoute = require("./routes/phoneState");
 const orderDetailRoute = require("./routes/orderDetail")
+const authRoute = require("./routes/auth")
+const packageRoute = require("./routes/package")
 
 app.use(cors("*"));
 app.use(express.json());
@@ -43,6 +45,8 @@ app.use("/api/keyword", keywordRoute);
 app.use("/api/productCategory", productCategoryRoute);
 app.use("/api/phoneState", phoneStateRoute);
 app.use("/api/order-detail", orderDetailRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/package", packageRoute);
 app.use("/main", mainRoute);
 app.use("/", indexRoute);
 

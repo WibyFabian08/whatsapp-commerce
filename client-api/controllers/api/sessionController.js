@@ -8,7 +8,6 @@ exports.createSession = async (req, res) => {
   try {
     await whatsapp.createSession(req, false, res);
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       success: false,
       message: "something went wrong on the server",

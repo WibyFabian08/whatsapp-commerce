@@ -21,10 +21,7 @@ const whatsapp = require("./helpers/whatsapp");
 
 const sessionRoute = require("./routes/session");
 const indexRoute = require("./routes/index");
-const mainRoute = require("./routes/main");
 const productRoute = require("./routes/product");
-const orderRoute = require("./routes/order");
-const keywordRoute = require("./routes/keyword");
 
 app.use(cors("*"));
 app.use(express.json());
@@ -35,9 +32,6 @@ app.set("view engine", "ejs");
 
 app.use("/global/api/session", sessionRoute);
 app.use("/global/api/product", productRoute);
-app.use("/global/api/order", orderRoute);
-app.use("/global/api/keyword", keywordRoute);
-app.use("/main", mainRoute);
 app.use("/", indexRoute);
 
 const listenerCallback = () => {

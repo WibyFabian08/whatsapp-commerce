@@ -188,7 +188,7 @@ exports.createSession = async (
 
           const device = await Device.findOne({
             where: {
-              name: sessionName,
+              name: req.body.sessionName,
               phone_number: req.body.phoneNumber,
             },
           });
@@ -198,9 +198,9 @@ exports.createSession = async (
             await device.save();
           } else {
             let newDevice = await Device.create({
-              partner_id: req.body.partner_id,
               name: req.body.sessionName,
               phone_number: req.body.phoneNumber,
+              partner_id: req.body.partner_id,
               status: req.body.status || "pending",
               expire_date: req.body.expire_date || null,
               notif_alert: req.body.notif_alert || null,
@@ -222,6 +222,7 @@ exports.createSession = async (
             data: update.qr,
           });
         } catch (err) {
+          console.log(err)
           res.status(500).json({
             success: false,
             message: "qr unsuccess created",

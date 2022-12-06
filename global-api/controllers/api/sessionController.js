@@ -7,7 +7,27 @@ const { Device } = require("../../models/index");
 exports.createSession = async (req, res) => {
   try {
     // const
-    await whatsapp.createSession(req.body.sessionName, false, res, req);
+    await whatsapp.createSession(req.headers.session, false, res, req);
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "something went wrong on the server",
+    });
+  }
+};
+
+exports.disConnectSession = async (req, res) => {
+  try {
+    const session = req.headers.session;
+    const sessionName = req.body.sessionName;
+
+    await whatsapp.deleteSession(sessionName, false, res);
+
+    return res.status(200).json({
+      success: true,
+      message: "disconnect session success",
+      data: {},
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -18,7 +38,7 @@ exports.createSession = async (req, res) => {
 
 exports.deleteSession = async (req, res) => {
   try {
-    const sessionName = req.body.sessionName;
+    const sessionName = req.headers.session;
 
     await whatsapp.deleteSession(sessionName, false, res);
 
@@ -46,23 +66,23 @@ exports.getSessions = async (req, res) => {
     const data = await Device.findAll();
 
     if (data) {
-      data.map(async (item) => {
-        let session = await Device.findOne({
-          where: {
-            name: item.name,
-            phone: item.phone_number,
-          },
-        });
-        let isActive = whatsapp.isSessionsExists(item.name);
-        if (isActive) {
-          item.status = "active";
-          session.status = "active";
-        } else {
-          session.status = "pending";
-        }
+      // data.map(async (item) => {
+      //   let session = await Device.findOne({
+      //     where: {
+      //       name: item.name,
+      //       phone: item.phone_number,
+      //     },
+      //   });
+      //   let isActive = whatsapp.isSessionsExists(item.name);
+      //   if (isActive) {
+      //     item.status = "active";
+      //     session.status = "active";
+      //   } else {
+      //     session.status = "pending";
+      //   }
 
-        await session.save();
-      });
+      //   await session.save();
+      // });
       return res.status(200).json({
         success: true,
         message: "get all session success",
@@ -87,8 +107,8 @@ exports.getSession = async (req, res) => {
   try {
     const data = await Device.findOne({
       where: {
-        name: req.body.sessionName,
-        phone_number: req.body.phoneNumber,
+        name: req.headers.session,
+        phone_number: req.params.phone,
       },
     });
 

@@ -76,6 +76,8 @@ exports.initMessage = async (sock, receiver, message) => {
 
       if (keyword.data.data !== null) {
         await sock.sendMessage(receiver, JSON.parse(keyword.data.data.content));
+      } else {
+        await stateNotFound(sock, receiver, message);
       }
 
       if (userState.state !== null) {
@@ -125,8 +127,6 @@ exports.initMessage = async (sock, receiver, message) => {
           headers,
         }
       );
-
-      // await OrderDetail.bulkCreate(insertOrderDetail);
     }
   } catch (err) {
     console.log(err);
