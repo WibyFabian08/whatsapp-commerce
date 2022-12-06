@@ -154,7 +154,7 @@ exports.createSession = async (
     if (connection === "close") {
       if (
         statusCode === makeWASocket.DisconnectReason.loggedOut ||
-        !shouldReconnect(sessionName)
+        !shouldReconnect(req?.body?.sessionName || "")
       ) {
         if (res && !res.headersSent) {
           res.status(500).json({
@@ -185,6 +185,8 @@ exports.createSession = async (
           // QRCode.toDataURL(update.qr, function (err, url) {
           //   res.render("index", { title: "Express", qr: url });
           // });
+
+          console.log(req.body)
 
           const device = await Device.findOne({
             where: {
