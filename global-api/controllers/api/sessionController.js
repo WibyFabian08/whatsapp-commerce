@@ -63,14 +63,18 @@ exports.deleteSession = async (req, res) => {
 
 exports.getSessions = async (req, res) => {
   try {
-    const data = await Device.findAll();
+    const data = await Device.findAll({
+      where: {
+        name: req.headers.session,
+      },
+    });
 
     if (data) {
       data.map(async (item) => {
         let session = await Device.findOne({
           where: {
             name: item.name,
-            phone: item.phone_number,
+            phone_number: item.phone_number,
           },
         });
         let isActive = whatsapp.isSessionsExists(item.name);
